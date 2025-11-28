@@ -1,8 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fa" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RSD456-mehr bro</title>
+    <meta name="referrer" content="no-referrer" />
     <link rel="icon" href="logo2.png" sizes="32x32">
     <link rel="icon" href="logo2.png" sizes="64x64">
     <link rel="icon" href="logo2.png" sizes="96x96">
@@ -16,94 +18,809 @@
     
     <!-- آیکون‌های مناسب اندروید -->
     <link rel="icon" href="logo2.png" sizes="192x192">
-    <link rel="manifest" href="/manifest.json">
-    <title>Search with rsd456</title>
+    <link rel="manifest" href="manifest.json">
     <style>
-        body {
+        /* ----------------------- 🌟 استایل‌های فوق مدرن 🌟 ----------------------- */
+        @import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --primary: #0A84FF;
+            --secondary: #30D158;
+            --danger: #FF453A;
+            --dark: #121212;
+            --light: #f4f7fa;
+            --card-bg: #ffffff;
+            --text-dark: #121212;
+            --text-light: #5e6c84;
+            --border-color: #e8e8e8;
+            --radius: 16px;
+            --input-radius: 12px;
+            --transition: .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        /* حالت تیره (Dark Mode) */
+        .dark-mode {
+            background: var(--dark);
+            color: #fff;
+        }
+
+        .dark-mode .card {
+            background: #1e1e1e;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            color: #fff;
+        }
+
+        .dark-mode .search-card, .dark-mode .qinput {
+            background: #2c2c2c;
+            color: #fff;
+            border-color: #333;
+        }
+
+        .dark-mode input:focus {
+            box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.4);
+        }
+
+        .dark-mode .result {
+            border-bottom-color: #333;
+        }
+
+        .dark-mode .url {
+            color: #a0a0a0;
+        }
+
+        .dark-mode .action-btn {
+            background: #333;
+            color: #fff;
+        }
+        
+        .dark-mode .summary-container {
+            background: #252525;
+            border-color: #383838;
+        }
+
+        .dark-mode .ai-details {
+            background: #00224d;
+            border-right-color: #55aaff;
+        }
+
+        /* حذف استایل‌های پیش‌فرض */
+        * {
             margin: 0;
             padding: 0;
-            font-family: 'Roboto', sans-serif;
-            background-color: #f4f4f4;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            color: #333;
+            box-sizing: border-box;
+            font-family: "Vazirmatn", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .container {
+
+        body {
+            background: var(--light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .app {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* ----------------------- کامپوننت‌های اصلی ----------------------- */
+
+        .search-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .brand {
+            font-size: 32px;
+            font-weight: 900;
             text-align: center;
-            padding: 50px;
-            background-color: #fff;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 800px;
-            box-sizing: border-box;
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            display: inline-block;
         }
-        .logo {
-            font-size: 90px;
-            font-weight: bold;
-            color: #4285F4;
-            text-transform: uppercase;
-            margin-bottom: 40px;
+
+        .brand span {
+            transition: transform 0.2s ease-out;
+            display: inline-block;
         }
-        .logo span:nth-child(2) { color: #060606; }
-        .logo span:nth-child(3) { color: #aa9fff; }
-        .logo span:nth-child(4) { color: #ff00f7; }
-        input[type="text"] {
-            width: 80%;
-            padding: 15px 25px;
-            font-size: 18px;
-            border-radius: 50px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            color: #333;
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .qinput {
+            flex-grow: 1;
+            padding: 14px 20px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--input-radius);
+            font-size: 16px;
+            transition: var(--transition);
+            min-width: 150px;
+        }
+
+        .qinput:focus {
+            border-color: var(--primary);
             outline: none;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
+            box-shadow: 0 0 0 4px rgba(10, 132, 255, 0.15);
         }
-        input[type="text"]::placeholder {
-            color: #aaa;
-            font-size: 18px;
-        }
-        button {
-            padding: 12px 25px;
-            font-size: 18px;
-            border-radius: 25px;
-            border: none;
-            background-color: #4285F4;
+
+        .btn {
+            background: var(--primary);
             color: #fff;
+            padding: 14px 25px;
+            border: none;
+            border-radius: var(--input-radius);
             cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.3s ease;
+            font-size: 15px;
+            font-weight: 600;
+            transition: var(--transition);
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
-        button:hover {
-            background-color: #2a67e8;
+
+        .btn:hover {
+            background: #006fe0;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary) !important;
+        }
+
+        .btn-secondary:hover {
+            background: #28b54e !important;
+        }
+        
+        .btn-clear {
+            background: var(--danger);
+        }
+
+        .btn-clear:hover {
+            background: #e03b30;
+        }
+
+        .hint {
+            text-align: center;
+            margin-top: 15px;
+            color: var(--text-light);
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        /* ----------------------- نتایج جستجو ----------------------- */
+
+        #resultTitle {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+            text-align: right;
+        }
+
+        .result {
+            display: flex;
+            gap: 15px;
+            padding: 20px 0;
+            border-bottom: 1px dashed var(--border-color);
+            transition: background 0.2s;
+        }
+
+        .result:hover {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .favicon-wrap {
+            flex-shrink: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .favicon {
+            width: 24px;
+            height: 24px;
+            border-radius: 6px;
+        }
+
+        .rmeta {
+            flex-grow: 1;
+        }
+
+        .rmeta h3 {
+            margin-bottom: 5px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .rmeta h3 a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .rmeta p {
+            color: var(--text-dark);
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .url {
+            color: var(--secondary);
+            font-size: 13px;
+            direction: ltr;
+            text-align: left;
+            overflow-wrap: break-word;
+            margin-bottom: 10px;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            background: #f0f0f0;
+            color: var(--text-dark);
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .open-btn {
+            background: var(--primary);
+            color: #fff;
+        }
+
+        .mehr-btn {
+            background: #ffcc00;
+            color: var(--text-dark);
+        }
+
+        .summary-container {
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+            background: #fcfcfc;
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s, transform 0.4s;
+        }
+
+        .summary-container.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .summary-container h4 {
+            color: var(--danger);
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .ai-details {
+            padding: 10px;
+            border-radius: 8px;
+            background: #e6f0ff;
+            border-right: 4px solid var(--primary);
+            margin-top: 10px;
+            font-size: 13px;
+        }
+
+        .image-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .image-item {
+            height: 180px;
+            border-radius: var(--radius);
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+        
+        .load-more {
+            display: block;
+            width: 100%;
+            margin: 30px 0;
+            background: var(--secondary);
+            color: #fff;
+            padding: 15px;
+            font-size: 16px;
+            border-radius: var(--input-radius);
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .load-more:hover {
+            background: #28b54e;
+        }
+
+        /* ----------------------- ابزارهای کمکی ----------------------- */
+
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+            margin-right: 5px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-light);
+            font-size: 13px;
+        }
+
+        /* واکنش‌گرایی موبایل */
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .qinput, .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .result {
+                flex-direction: column;
+                padding-left: 0;
+            }
+
+            .favicon-wrap {
+                display: none;
+            }
+            
+            .image-gallery {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="logo">
-            <span>R</span><span>S</span><span>D</span><span>4</span><span>5</span><span>6</span>
+    <div class="app">
+        <div class="search-card">
+            <div style="text-align: center;">
+                <div class="brand">
+                    <span style="color:#ffe600;">4</span>
+                    <span style="color:#1aff72;">5</span>
+                    <span style="color:#1ac6ff;">6</span>
+                    <span style="color:#b91aff;">D</span>
+                    <span style="color:#ff3b3b;">S</span>
+                    <span style="color:#ff9f1c;">R</span>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <input id="q" class="qinput" placeholder="عبارت، لینک یا دستور را وارد کنید..." />
+                <button id="webSearchBtn" class="btn"><i class="icon-search">🔎</i> جست‌وجوی وب</button>
+                <button id="imageSearchBtn" class="btn btn-secondary"><i class="icon-image">🖼️</i> جستجوی تصاویر</button>
+                <button id="clearBtn" class="btn btn-clear"><i class="icon-clear">❌</i> پاک کن</button>
+                <a href="https://rasandesign.ir" style="text-decoration: none;"><button style="background-color: aqua;" class="btn">َABOUT US</button></a>
+            </div>
+            <div class="hint">⚡ موتور جستجوی یکپارچه هوشمند - جستجوی وب، تصویر و تحلیل AI.</div>
         </div>
-        <input id="searchQuery" type="text" placeholder="Search with rsd456" />
-        <button onclick="performSearch()">Search</button>
+
+        <div id="results" class="results">
+            <h2 id="resultTitle" style="display:none;"></h2>
+            <div id="webResultsList" class="web-results-list"></div>
+            
+            <div id="imageGallery" class="image-gallery">
+                </div>
+            <button class="load-more" id="loadMoreBtn" style="display:none;" onclick="loadMoreImages()">بارگذاری تصاویر بیشتر</button>
+        </div>
+        
+        <div class="footer">
+            🔥 نسخه پیشرفته (Ultimate Edition). تحلیل AI با استفاده از **Soltani ai** پیاده‌سازی شده است.
+            <br>
+            <a href="https://rasandesign.ir"> ساخته شده توسط شرکت راسان دیزاین </a>
+        </div>
+        
+        <button onclick="document.body.classList.toggle('dark-mode')" class="btn" style="position: fixed; bottom: 20px; left: 20px; z-index: 999; padding: 10px 15px;">🌙 حالت تاریک</button>
     </div>
 
     <script>
-        function performSearch() {
-            const query = document.getElementById("searchQuery").value;
-            const url = `results.html?q=${encodeURIComponent(query)}`;
-            window.location.href = url;
+        // =========== تنظیمات فوق پیشرفته و ثابت‌ها ==========
+        // **مهم ۱: کلید Google Custom Search خود را اینجا وارد کنید.**
+        const GOOGLE_API_KEY = 'AIzaSyAZkNKej22xoCVAqGkzzazvUxVPWfiqyns'; 
+        // **مهم ۲: شناسه موتور جستجوی Programmable Search خود را اینجا وارد کنید.**
+        const CX = '7477c54d92be34784'; 
+        
+        // **مهم ۳: کلید Gemini API خود را اینجا وارد کنید.**
+        // توجه: این روش به دلیل محدودیت‌های CORS ممکن است در مرورگرها با خطا مواجه شود.
+        const GEMINI_API_KEY = 'AIzaSyAZkNKej22xoCVAqGkzzazvUxVPWfiqyns'; // مطمئن شوید که این کلید، کلید صحیح Gemini API شماست.
+        const GEMINI_MODEL = 'gemini-2.5-flash';
+        
+        // متغیرهای وضعیت برای جستجوی تصاویر
+        let imageQuery = '';
+        let startIndex = 1;
+        
+        // =========== کمکی‌ها و ابزارها ===========
+        function el(tag, attrs = {}, children = []) {
+            const e = document.createElement(tag);
+            for (const k in attrs) {
+                if (k === 'html') e.innerHTML = attrs[k];
+                else if (k === 'className') e.className = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            children.forEach(c => e.appendChild(c));
+            return e;
         }
 
-        // Add event listener for the Enter key
-        document.getElementById("searchQuery").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                performSearch();
+        function faviconFor(link) {
+            try {
+                const d = new URL(link).hostname;
+                return `https://www.google.com/s2/favicons?domain=${d}&sz=64`;
+            } catch (e) {
+                return '';
             }
+        }
+
+        function isURL(str) {
+            if (str.startsWith('http://') || str.startsWith('https://')) {
+                try {
+                    new URL(str);
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            }
+            
+            const parts = str.split(/\s+/); 
+            if (parts.length === 1 && (str.includes('.') && str.length > 5)) {
+                return true;
+            }
+
+            return false;
+        }
+
+
+        function escapeHtml(s) { 
+            if (!s) return ''; 
+            return String(s).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m] });
+        }
+        
+        // =========== هسته جستجو و رندرینگ ===========
+        const webResultsList = document.getElementById('webResultsList');
+        const imageGallery = document.getElementById('imageGallery');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const resultTitle = document.getElementById('resultTitle');
+        const qInput = document.getElementById('q');
+        const webSearchBtn = document.getElementById('webSearchBtn');
+        const imageSearchBtn = document.getElementById('imageSearchBtn');
+        const clearBtn = document.getElementById('clearBtn');
+
+        // رویدادهای دکمه‌ها
+        webSearchBtn.addEventListener('click', () => doWebSearch());
+        imageSearchBtn.addEventListener('click', () => doImageSearch(1));
+        clearBtn.addEventListener('click', () => { 
+            qInput.value = ''; 
+            webResultsList.innerHTML = ''; 
+            imageGallery.innerHTML = '';
+            loadMoreBtn.style.display = 'none';
+            resultTitle.style.display = 'none';
         });
+        qInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') doWebSearch(); });
+
+        // === توابع اصلی جستجو ===
+
+        async function doWebSearch() {
+            const q = qInput.value.trim();
+            if (!q) return; 
+            
+            if (isURL(q)) {
+                const finalUrl = q.startsWith('http') ? q : `https://${q}`;
+                window.open(finalUrl, '_blank');
+                return; 
+            }
+
+            imageGallery.innerHTML = '';
+            loadMoreBtn.style.display = 'none';
+            resultTitle.style.display = 'block';
+            resultTitle.textContent = `نتایج جستجوی وب برای: "${q}"`;
+            webResultsList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-light)"><span class="spinner"></span> در حال جست‌وجوی عمیق وب...</div>`;
+            
+            try {
+                const data = await searchGoogle(q);
+                renderWebResults(data);
+            } catch (err) {
+                webResultsList.innerHTML = `<div style="text-align:center;color:var(--danger);padding:24px;font-weight:600">❌ خطای API: ${err.message}. **کلید و شناسه  را بررسی کنید.**</div>`;
+                console.error("Web Search Error:", err);
+            }
+        }
+
+        async function doImageSearch(start) {
+            const q = qInput.value.trim();
+            if (!q) return; 
+            
+            imageQuery = q;
+            startIndex = start;
+
+            webResultsList.innerHTML = '';
+            loadMoreBtn.style.display = 'none';
+
+            if (startIndex === 1) {
+                imageGallery.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-light)"><span class="spinner" style="border-top-color:var(--secondary)"></span> در حال جستجوی تصاویر...</div>`;
+                resultTitle.style.display = 'block';
+                resultTitle.textContent = `نتایج جستجوی تصاویر برای: "${q}"`;
+            } else {
+                loadMoreBtn.innerHTML = '<span class="spinner"></span> در حال بارگذاری...';
+                loadMoreBtn.disabled = true;
+            }
+
+            try {
+                const data = await searchGoogleImages(q, startIndex);
+                renderImageResults(data);
+            } catch (err) {
+                if (startIndex === 1) {
+                    imageGallery.innerHTML = `<div style="text-align:center;color:var(--danger);padding:24px;font-weight:600">❌ خطای API: ${err.message}. **کلید و شناسه  را بررسی کنید.**</div>`;
+                }
+            } finally {
+                loadMoreBtn.disabled = false;
+                loadMoreBtn.innerHTML = 'بارگذاری تصاویر بیشتر';
+            }
+        }
+
+        // === توابع API ===
+
+        async function searchGoogle(query, start = 1) {
+            const url = `https://www.googleapis.com/customsearch/v1?key=${encodeURIComponent(GOOGLE_API_KEY)}&cx=${encodeURIComponent(CX)}&q=${encodeURIComponent(query)}&start=${start}`;
+            
+            const res = await fetch(url);
+            
+            if (!res.ok) {
+                const errorBody = await res.json().catch(() => ({ message: 'No detailed error message from API.' }));
+                throw new Error(`Google API HTTP Error: ${res.status}. Details: ${errorBody.error?.message || errorBody.message}`);
+            }
+            return res.json();
+        }
+
+        async function searchGoogleImages(query, start) {
+            const url = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&searchType=image&key=${encodeURIComponent(GOOGLE_API_KEY)}&cx=${encodeURIComponent(CX)}&start=${start}`;
+            const res = await fetch(url);
+            
+            if (!res.ok) {
+                const errorBody = await res.json().catch(() => ({ message: 'No detailed error message from API.' }));
+                throw new Error(`Google API HTTP Error: ${res.status}. Details: ${errorBody.error?.message || errorBody.message}`);
+            }
+            return res.json();
+        }
+
+        // *** تابع اصلاح شده نهایی: خلاصه سازی با Gemini API (استفاده از 'tools' در سطح ریشه) ***
+        async function summarizeWithGemini(url, query) {
+            // اطمینان از تنظیم بودن کلید
+            if (GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY' || !GEMINI_API_KEY) {
+                throw new Error("لطفاً متغیر GEMINI_API_KEY را با کلید معتبر خود جایگزین کنید.");
+            }
+            
+            // پرامپت (دستور) که ابزار Gemini برای تحلیل نیاز دارد
+            const prompt = `خلاصه دقیقی از محتوای این URL ("${url}") بساز و به من ارائه بده. نکته‌های کلیدی مرتبط با عبارت جستجوی اصلی ("${query}") را برجسته کن. از زبان فارسی استفاده کن.`;
+            
+            // ساختار JSON نهایی برای ابزارهای Gemini API
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                
+                // *** اصلاح نهایی و قطعی: حذف 'config' و 'toolConfig' و استفاده مستقیم از فیلد 'tools' در سطح ریشه ***
+                tools: [ 
+                    { googleSearch: {} } 
+                ]
+            };
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+            
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+                const errorBody = await res.json().catch(() => ({}));
+                const errorMessage = errorBody.error?.message || `خطای ناشناخته: ${res.status}`;
+                throw new Error(`فراخوانی  با خطا مواجه شد: ${errorMessage}`);
+            }
+            
+            const data = await res.json();
+            const summary = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+            if (!summary) {
+                throw new Error("پاسخ  خالی بود یا محتوایی نداشت.");
+            }
+            
+            return {
+                summary: summary,
+                detailsHtml: `<p>خلاصه توسط مدل SOLTANI_AI-rsd.1 ایجاد شده است.</p>`
+            };
+        }
+
+
+        // === توابع رندرینگ ===
+        
+        function renderWebResults(data) {
+            webResultsList.innerHTML = '';
+            if (!data || !data.items || data.items.length === 0) {
+                webResultsList.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:24px">😭 نتیجه‌ای یافت نشد.</div>';
+                return;
+            }
+            
+            data.items.forEach(item => {
+                const r = el('div', { className: 'result' });
+                
+                const imgWrap = el('div', { className: 'favicon-wrap' }, [
+                    el('img', { className: 'favicon', src: faviconFor(item.link), alt: 'Favicon' })
+                ]);
+
+                const meta = el('div', { className: 'rmeta' });
+                const titleLink = el('a', { href: item.link, target: '_blank', rel: 'noopener noreferrer' });
+                titleLink.textContent = item.title;
+                const h = el('h3', {}, [titleLink]);
+                const snippet = el('p', {}, []); snippet.textContent = item.snippet || 'توضیحات در دسترس نیست.';
+                const urlEl = el('div', { className: 'url' }); urlEl.textContent = item.link;
+
+                const actions = el('div', { className: 'actions' });
+                const openBtn = el('button', { className: 'action-btn open-btn' }); openBtn.innerHTML = '🌐 باز کردن سایت'; openBtn.addEventListener('click', () => window.open(item.link, '_blank'));
+                const mehrBtn = el('button', { className: 'action-btn mehr-btn' }); mehrBtn.innerHTML = '✨ تحلیل AI (soltani ai)';
+                
+                const summaryWrap = el('div', { className: 'summary-container' }, [
+                    el('h4', { html: 'تحلیل هوش مصنوعی (AI Analysis)' }),
+                    el('div', { className: 'summary-content', html: 'در حال بارگذاری...' })
+                ]);
+                
+                mehrBtn.addEventListener('click', async () => {
+                    const isActive = summaryWrap.classList.contains('active');
+                    const summaryContent = summaryWrap.querySelector('.summary-content');
+                    
+                    if (isActive) {
+                        summaryWrap.classList.remove('active');
+                        mehrBtn.innerHTML = '✨ تحلیل AI (Gemini)';
+                        return;
+                    }
+
+                    summaryWrap.classList.add('active');
+                    mehrBtn.innerHTML = '<span class="spinner"></span> در حال تحلیل...';
+                    mehrBtn.disabled = true;
+
+                    try {
+                        summaryContent.innerHTML = `<div style="text-align:center;padding:10px;color:var(--primary)"><span class="spinner" style="border-top-color:var(--primary); border-width: 2px;"></span> در حال درخواست خلاصه از soltani ...</div>`;
+                        
+                        // *** فراخوانی تابع اصلاح شده ***
+                        const responseData = await summarizeWithGemini(item.link, qInput.value.trim());
+                        
+                        const summary = responseData.summary || 'خلاصه AI در دسترس نیست.';
+                        const details = responseData.detailsHtml || `<p>خلاصه توسط مدل SOLTANI_AI-rsd.1 ایجاد شده است.</p>`;
+
+                        summaryContent.innerHTML = `
+                            <strong>خلاصه اصلی (AI):</strong> ${summary}
+                            <h4>جزئیات هوش مصنوعی و نکات کلیدی:</h4>
+                            <div class="ai-details">${details}</div>
+                        `;
+                    } catch (e) {
+                        // در صورت بروز خطای CORS یا خطای کلید API
+                        summaryContent.innerHTML = `<div style='color:var(--danger); font-weight:600'>❌ خطا در اجرای AI (soltani): ${e.message}</div>`;
+                        console.error("Gemini Error:", e);
+                    } finally { 
+                        mehrBtn.disabled = false; 
+                        mehrBtn.innerHTML = '✨ بستن تحلیل AI';
+                    }
+                });
+
+                actions.appendChild(openBtn); 
+                actions.appendChild(mehrBtn);
+
+                meta.appendChild(h); 
+                meta.appendChild(urlEl); 
+                meta.appendChild(snippet); 
+                meta.appendChild(actions); 
+                meta.appendChild(summaryWrap);
+                
+                r.appendChild(imgWrap); 
+                r.appendChild(meta);
+                webResultsList.appendChild(r);
+            });
+        }
+        
+        function renderImageResults(data) {
+            if (startIndex === 1) {
+                imageGallery.innerHTML = '';
+            }
+
+            const items = data.items;
+            
+            if (!items || items.length === 0) {
+                if (startIndex === 1) {
+                    imageGallery.innerHTML = "<p style='text-align:center; color:var(--text-light);'>تصویری یافت نشد.</p>";
+                }
+                loadMoreBtn.style.display = "none";
+                return;
+            }
+
+            items.forEach(item => {
+                const div = document.createElement("div");
+                div.className = "image-item";
+                const imageUrl = item.image && item.image.thumbnailSrc ? item.image.thumbnailSrc : item.link;
+                div.style.backgroundImage = `url(${imageUrl})`;
+                div.setAttribute('title', item.title);
+                div.addEventListener('click', () => window.open(item.link, '_blank')); 
+                imageGallery.appendChild(div);
+            });
+
+            if (items.length < 10 || !data.queries.nextPage) {
+                loadMoreBtn.style.display = "none";
+            } else {
+                loadMoreBtn.style.display = "block";
+            }
+        }
+
+        function loadMoreImages() {
+          startIndex += 10;
+          doImageSearch(startIndex);
+        }
+
+        // === اجرای اولیه ===
+        (function initFromQuery() {
+            const params = new URLSearchParams(location.search);
+            const q = params.get('q');
+            const type = params.get('type');
+            if (q) { 
+                qInput.value = q; 
+                if (type === 'image') {
+                    doImageSearch(1);
+                } else {
+                    doWebSearch(); 
+                }
+            }
+        })();
+
     </script>
 </body>
 </html>
