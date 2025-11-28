@@ -6,17 +6,7 @@
     <title>RSD456-mehr bro</title>
     <meta name="referrer" content="no-referrer" />
     <link rel="icon" href="logo2.png" sizes="32x32">
-    <link rel="icon" href="logo2.png" sizes="64x64">
-    <link rel="icon" href="logo2.png" sizes="96x96">
-    <link rel="icon" href="logo2.png" sizes="128x128">
-    <link rel="icon" href="logo2.png" sizes="192x192">
-    <link rel="icon" href="logo2.png" sizes="256x256">
-    <link rel="icon" href="logo2.png" sizes="512x512">
-
-    <!-- آیکون‌ها برای اپل -->
     <link rel="apple-touch-icon" href="logo2.png" sizes="180x180">
-    
-    <!-- آیکون‌های مناسب اندروید -->
     <link rel="icon" href="logo2.png" sizes="192x192">
     <link rel="manifest" href="manifest.json">
     <style>
@@ -36,9 +26,12 @@
             --radius: 16px;
             --input-radius: 12px;
             --transition: .3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            /* رنگ‌های جدید */
+            --video-btn: #FF9F1C; /* نارنجی برای ویدیو */
+            --wiki-btn: #A36A00; /* زرد تیره برای ویکی پدیا */
         }
 
-        /* حالت تیره (Dark Mode) */
+        /* حالت تیره (Dark Mode) - بخش‌های مربوط به رنگ‌ها و سایه‌ها */
         .dark-mode {
             background: var(--dark);
             color: #fff;
@@ -81,6 +74,18 @@
         .dark-mode .ai-details {
             background: #00224d;
             border-right-color: #55aaff;
+        }
+        
+        .dark-mode .image-item {
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
+        }
+        
+        .dark-mode .image-item:hover {
+            box-shadow: 0 8px 25px rgba(255, 255, 255, 0.2);
+        }
+        
+        .dark-mode .footer {
+            border-top-color: #333;
         }
 
         /* حذف استایل‌های پیش‌فرض */
@@ -133,6 +138,13 @@
             display: flex;
             gap: 10px;
             align-items: center;
+            flex-wrap: wrap; /* اجازه شکستن خط در موبایل */
+        }
+        
+        .main-controls {
+            display: flex;
+            gap: 10px;
+            flex-grow: 1;
         }
 
         .qinput {
@@ -171,6 +183,23 @@
         .btn:hover {
             background: #006fe0;
             transform: translateY(-2px);
+        }
+        
+        /* دکمه‌های جدید */
+        .btn-video {
+            background: var(--video-btn) !important;
+        }
+        
+        .btn-video:hover {
+            background: #e08b15 !important;
+        }
+        
+        .btn-wiki {
+            background: var(--wiki-btn) !important;
+        }
+        
+        .btn-wiki:hover {
+            background: #8e5d00 !important;
         }
 
         .btn-secondary {
@@ -406,6 +435,11 @@
                 flex-direction: column;
                 gap: 15px;
             }
+            
+            .main-controls {
+                flex-direction: column;
+                width: 100%;
+            }
 
             .qinput, .btn {
                 width: 100%;
@@ -443,12 +477,18 @@
             
             <div class="controls">
                 <input id="q" class="qinput" placeholder="عبارت، لینک یا دستور را وارد کنید..." />
-                <button id="webSearchBtn" class="btn"><i class="icon-search">🔎</i> جست‌وجوی وب</button>
-                <button id="imageSearchBtn" class="btn btn-secondary"><i class="icon-image">🖼️</i> جستجوی تصاویر</button>
+                
+                <div class="main-controls">
+                    <button id="webSearchBtn" class="btn"><i class="icon-search">🔎</i> جست‌وجوی وب</button>
+                    <button id="imageSearchBtn" class="btn btn-secondary"><i class="icon-image">🖼️</i> جستجوی تصاویر</button>
+                    <button id="videoSearchBtn" class="btn btn-video"><i class="icon-video">▶️</i> جستجوی ویدیو</button> 
+                    <button id="wikiSearchBtn" class="btn btn-wiki"><i class="icon-wiki">📚</i> جستجوی ویکی‌پدیا</button> 
+                </div>
+                
                 <button id="clearBtn" class="btn btn-clear"><i class="icon-clear">❌</i> پاک کن</button>
-                <a href="https://rasandesign.ir" style="text-decoration: none;"><button style="background-color: aqua;" class="btn">َABOUT US</button></a>
+                <a href="https://rasandesign.ir" style="text-decoration: none;"><button style="background-color: aqua;" class="btn">ABOUT US</button></a>
             </div>
-            <div class="hint">⚡ موتور جستجوی یکپارچه هوشمند - جستجوی وب، تصویر و تحلیل AI.</div>
+            <div class="hint">⚡ موتور جستجوی یکپارچه هوشمند - جستجوی وب، تصویر، ویدیو، ویکی‌پدیا و تحلیل AI.</div>
         </div>
 
         <div id="results" class="results">
@@ -457,7 +497,7 @@
             
             <div id="imageGallery" class="image-gallery">
                 </div>
-            <button class="load-more" id="loadMoreBtn" style="display:none;" onclick="loadMoreImages()">بارگذاری تصاویر بیشتر</button>
+            <button class="load-more" id="loadMoreBtn" style="display:none;" onclick="loadMore()">بارگذاری بیشتر</button>
         </div>
         
         <div class="footer">
@@ -469,362 +509,400 @@
         <button onclick="document.body.classList.toggle('dark-mode')" class="btn" style="position: fixed; bottom: 20px; left: 20px; z-index: 999; padding: 10px 15px;">🌙 حالت تاریک</button>
     </div>
 
-    <script>
-        // =========== تنظیمات فوق پیشرفته و ثابت‌ها ==========
-        // **مهم ۱: کلید Google Custom Search خود را اینجا وارد کنید.**
-        const GOOGLE_API_KEY = 'AIzaSyAZkNKej22xoCVAqGkzzazvUxVPWfiqyns'; 
-        // **مهم ۲: شناسه موتور جستجوی Programmable Search خود را اینجا وارد کنید.**
-        const CX = '7477c54d92be34784'; 
-        
-        // **مهم ۳: کلید Gemini API خود را اینجا وارد کنید.**
-        // توجه: این روش به دلیل محدودیت‌های CORS ممکن است در مرورگرها با خطا مواجه شود.
-        const GEMINI_API_KEY = 'AIzaSyAZkNKej22xoCVAqGkzzazvUxVPWfiqyns'; // مطمئن شوید که این کلید، کلید صحیح Gemini API شماست.
-        const GEMINI_MODEL = 'gemini-2.5-flash';
-        
-        // متغیرهای وضعیت برای جستجوی تصاویر
-        let imageQuery = '';
-        let startIndex = 1;
-        
-        // =========== کمکی‌ها و ابزارها ===========
-        function el(tag, attrs = {}, children = []) {
-            const e = document.createElement(tag);
-            for (const k in attrs) {
-                if (k === 'html') e.innerHTML = attrs[k];
-                else if (k === 'className') e.className = attrs[k];
-                else e.setAttribute(k, attrs[k]);
-            }
-            children.forEach(c => e.appendChild(c));
-            return e;
-        }
+    <script>
+        // =========== تنظیمات فوق پیشرفته و ثابت‌ها ==========
+        // **مهم ۱: کلید Google Custom Search خود را اینجا وارد کنید.**
+        const GOOGLE_API_KEY = 'AIzaSyAZkNKej22xoCVAqGkzzazvUxVPWfiqyns'; 
+        // **مهم ۲: شناسه موتور جستجوی Programmable Search خود را اینجا وارد کنید.**
+        const CX = '7477c54d92be34784'; 
+        
+        // **مهم ۳: کلید Gemini API خود را اینجا وارد کنید.**
+        const GEMINI_API_KEY = 'AIzaSyAZkNKej22xoCVAqGkzzazvUxVPWfiqyns';
+        const GEMINI_MODEL = 'gemini-2.5-flash';
+        
+        // متغیرهای وضعیت برای جستجوی تصاویر
+        let currentQuery = '';
+        let currentSearchType = 'web'; // web, image, video, wiki
+        let startIndex = 1;
+        
+        // =========== کمکی‌ها و ابزارها ===========
+        function el(tag, attrs = {}, children = []) {
+            const e = document.createElement(tag);
+            for (const k in attrs) {
+                if (k === 'html') e.innerHTML = attrs[k];
+                else if (k === 'className') e.className = attrs[k];
+                else e.setAttribute(k, attrs[k]);
+            }
+            children.forEach(c => e.appendChild(c));
+            return e;
+        }
 
-        function faviconFor(link) {
-            try {
-                const d = new URL(link).hostname;
-                return `https://www.google.com/s2/favicons?domain=${d}&sz=64`;
-            } catch (e) {
-                return '';
-            }
-        }
+        function faviconFor(link) {
+            try {
+                const d = new URL(link).hostname;
+                return `https://www.google.com/s2/favicons?domain=${d}&sz=64`;
+            } catch (e) {
+                return '';
+            }
+        }
 
-        function isURL(str) {
-            if (str.startsWith('http://') || str.startsWith('https://')) {
-                try {
-                    new URL(str);
-                    return true;
-                } catch (e) {
-                    return false;
-                }
-            }
-            
-            const parts = str.split(/\s+/); 
-            if (parts.length === 1 && (str.includes('.') && str.length > 5)) {
-                return true;
-            }
+        function isURL(str) {
+            if (str.startsWith('http://') || str.startsWith('https://')) {
+                try {
+                    new URL(str);
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            }
+            
+            const parts = str.split(/\s+/); 
+            if (parts.length === 1 && (str.includes('.') && str.length > 5)) {
+                return true;
+            }
 
-            return false;
-        }
-
-
-        function escapeHtml(s) { 
-            if (!s) return ''; 
-            return String(s).replace(/[&<>"']/g, function (m) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m] });
-        }
-        
-        // =========== هسته جستجو و رندرینگ ===========
-        const webResultsList = document.getElementById('webResultsList');
-        const imageGallery = document.getElementById('imageGallery');
-        const loadMoreBtn = document.getElementById('loadMoreBtn');
-        const resultTitle = document.getElementById('resultTitle');
-        const qInput = document.getElementById('q');
-        const webSearchBtn = document.getElementById('webSearchBtn');
-        const imageSearchBtn = document.getElementById('imageSearchBtn');
-        const clearBtn = document.getElementById('clearBtn');
-
-        // رویدادهای دکمه‌ها
-        webSearchBtn.addEventListener('click', () => doWebSearch());
-        imageSearchBtn.addEventListener('click', () => doImageSearch(1));
-        clearBtn.addEventListener('click', () => { 
-            qInput.value = ''; 
-            webResultsList.innerHTML = ''; 
-            imageGallery.innerHTML = '';
-            loadMoreBtn.style.display = 'none';
-            resultTitle.style.display = 'none';
-        });
-        qInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') doWebSearch(); });
-
-        // === توابع اصلی جستجو ===
-
-        async function doWebSearch() {
-            const q = qInput.value.trim();
-            if (!q) return; 
-            
-            if (isURL(q)) {
-                const finalUrl = q.startsWith('http') ? q : `https://${q}`;
-                // اصلاح شده برای باز شدن در همان تب
-                window.location.href = finalUrl;
-                return; 
-            }
-
-            imageGallery.innerHTML = '';
-            loadMoreBtn.style.display = 'none';
-            resultTitle.style.display = 'block';
-            resultTitle.textContent = `نتایج جستجوی وب برای: "${q}"`;
-            webResultsList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-light)"><span class="spinner"></span> در حال جست‌وجوی عمیق وب...</div>`;
-            
-            try {
-                const data = await searchGoogle(q);
-                renderWebResults(data);
-            } catch (err) {
-                webResultsList.innerHTML = `<div style="text-align:center;color:var(--danger);padding:24px;font-weight:600">❌ خطای API: ${err.message}. **کلید و شناسه  را بررسی کنید.**</div>`;
-                console.error("Web Search Error:", err);
-            }
-        }
-
-        async function doImageSearch(start) {
-            const q = qInput.value.trim();
-            if (!q) return; 
-            
-            imageQuery = q;
-            startIndex = start;
-
-            webResultsList.innerHTML = '';
-            loadMoreBtn.style.display = 'none';
-
-            if (startIndex === 1) {
-                imageGallery.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-light)"><span class="spinner" style="border-top-color:var(--secondary)"></span> در حال جستجوی تصاویر...</div>`;
-                resultTitle.style.display = 'block';
-                resultTitle.textContent = `نتایج جستجوی تصاویر برای: "${q}"`;
-            } else {
-                loadMoreBtn.innerHTML = '<span class="spinner"></span> در حال بارگذاری...';
-                loadMoreBtn.disabled = true;
-            }
-
-            try {
-                const data = await searchGoogleImages(q, startIndex);
-                renderImageResults(data);
-            } catch (err) {
-                if (startIndex === 1) {
-                    imageGallery.innerHTML = `<div style="text-align:center;color:var(--danger);padding:24px;font-weight:600">❌ خطای API: ${err.message}. **کلید و شناسه  را بررسی کنید.**</div>`;
-                }
-            } finally {
-                loadMoreBtn.disabled = false;
-                loadMoreBtn.innerHTML = 'بارگذاری تصاویر بیشتر';
-            }
-        }
-
-        // === توابع API ===
-
-        async function searchGoogle(query, start = 1) {
-            const url = `https://www.googleapis.com/customsearch/v1?key=${encodeURIComponent(GOOGLE_API_KEY)}&cx=${encodeURIComponent(CX)}&q=${encodeURIComponent(query)}&start=${start}`;
-            
-            const res = await fetch(url);
-            
-            if (!res.ok) {
-                const errorBody = await res.json().catch(() => ({ message: 'No detailed error message from API.' }));
-                throw new Error(`Google API HTTP Error: ${res.status}. Details: ${errorBody.error?.message || errorBody.message}`);
-            }
-            return res.json();
-        }
-
-        async function searchGoogleImages(query, start) {
-            const url = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&searchType=image&key=${encodeURIComponent(GOOGLE_API_KEY)}&cx=${encodeURIComponent(CX)}&start=${start}`;
-            const res = await fetch(url);
-            
-            if (!res.ok) {
-                const errorBody = await res.json().catch(() => ({ message: 'No detailed error message from API.' }));
-                throw new Error(`Google API HTTP Error: ${res.status}. Details: ${errorBody.error?.message || errorBody.message}`);
-            }
-            return res.json();
-        }
-
-        // *** تابع اصلاح شده نهایی: خلاصه سازی با Gemini API (استفاده از 'tools' در سطح ریشه) ***
-        async function summarizeWithGemini(url, query) {
-            // اطمینان از تنظیم بودن کلید
-            if (GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY' || !GEMINI_API_KEY) {
-                throw new Error("لطفاً متغیر GEMINI_API_KEY را با کلید معتبر خود جایگزین کنید.");
-            }
-            
-            // پرامپت (دستور) که ابزار Gemini برای تحلیل نیاز دارد
-            const prompt = `خلاصه دقیقی از محتوای این URL ("${url}") بساز و به من ارائه بده. نکته‌های کلیدی مرتبط با عبارت جستجوی اصلی ("${query}") را برجسته کن. از زبان فارسی استفاده کن.`;
-            
-            // ساختار JSON نهایی برای ابزارهای Gemini API
-            const payload = {
-                contents: [{ role: "user", parts: [{ text: prompt }] }],
-                
-                // *** اصلاح نهایی و قطعی: حذف 'config' و 'toolConfig' و استفاده مستقیم از فیلد 'tools' در سطح ریشه ***
-                tools: [ 
-                    { googleSearch: {} } 
-                ]
-            };
-
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
-            
-            const res = await fetch(apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            });
-
-            if (!res.ok) {
-                const errorBody = await res.json().catch(() => ({}));
-                const errorMessage = errorBody.error?.message || `خطای ناشناخته: ${res.status}`;
-                throw new Error(`فراخوانی  با خطا مواجه شد: ${errorMessage}`);
-            }
-            
-            const data = await res.json();
-            const summary = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-            if (!summary) {
-                throw new Error("پاسخ  خالی بود یا محتوایی نداشت.");
-            }
-            
-            return {
-                summary: summary,
-                detailsHtml: `<p>خلاصه توسط مدل SOLTANI_AI-rsd.1 ایجاد شده است.</p>`
-            };
-        }
+            return false;
+        }
 
 
-        // === توابع رندرینگ ===
-        
-        function renderWebResults(data) {
-            webResultsList.innerHTML = '';
-            if (!data || !data.items || data.items.length === 0) {
-                webResultsList.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:24px">😭 نتیجه‌ای یافت نشد.</div>';
-                return;
-            }
-            
-            data.items.forEach(item => {
-                const r = el('div', { className: 'result' });
-                
-                const imgWrap = el('div', { className: 'favicon-wrap' }, [
-                    el('img', { className: 'favicon', src: faviconFor(item.link), alt: 'Favicon' })
-                ]);
+        // =========== هسته جستجو و رندرینگ ===========
+        const webResultsList = document.getElementById('webResultsList');
+        const imageGallery = document.getElementById('imageGallery');
+        const loadMoreBtn = document.getElementById('loadMoreBtn');
+        const resultTitle = document.getElementById('resultTitle');
+        const qInput = document.getElementById('q');
+        const webSearchBtn = document.getElementById('webSearchBtn');
+        const imageSearchBtn = document.getElementById('imageSearchBtn');
+        const videoSearchBtn = document.getElementById('videoSearchBtn'); 
+        const wikiSearchBtn = document.getElementById('wikiSearchBtn');   
+        const clearBtn = document.getElementById('clearBtn');
 
-                const meta = el('div', { className: 'rmeta' });
-                // 💡 تغییر ۱: حذف target: '_blank' برای باز شدن در همان تب
-                const titleLink = el('a', { href: item.link, rel: 'noopener noreferrer' }); 
-                titleLink.textContent = item.title;
-                const h = el('h3', {}, [titleLink]);
-                const snippet = el('p', {}, []); snippet.textContent = item.snippet || 'توضیحات در دسترس نیست.';
-                const urlEl = el('div', { className: 'url' }); urlEl.textContent = item.link;
+        // رویدادهای دکمه‌ها
+        webSearchBtn.addEventListener('click', () => doSearch('web', 1));
+        imageSearchBtn.addEventListener('click', () => doSearch('image', 1));
+        
+        // 🚨 اصلاح برای حل مشکل ۱ (ویکی‌پدیا) و مشکل ۲ (جستجوی ویدیو)
+        // مشکل ۱: ویکی‌پدیا را مستقیما به سایت ارجاع می‌دهد
+wikiSearchBtn.addEventListener('click', () => {
+    const q = qInput.value.trim();
+    if (!q) return;
+    // آدرس جستجوی مستقیم در ویکی پدیای فارسی
+    const wikiUrl = `https://fa.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(q)}`;
+    // 💡 تغییر: حذف '_blank' برای باز شدن در همان تب
+    window.open(wikiUrl, '_self'); 
+    // یا می‌توانید به سادگی از window.location.href استفاده کنید:
+    // window.location.href = wikiUrl;
+});
+        // مشکل ۲: جستجوی ویدیو را به عنوان یک جستجوی وب خاص هندل می‌کند
+        videoSearchBtn.addEventListener('click', () => doSearch('video', 1));
+        
+        clearBtn.addEventListener('click', () => { 
+            qInput.value = ''; 
+            webResultsList.innerHTML = ''; 
+            imageGallery.innerHTML = '';
+            loadMoreBtn.style.display = 'none';
+            resultTitle.style.display = 'none';
+        });
+        qInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') doSearch('web', 1); });
+        loadMoreBtn.addEventListener('click', loadMore);
 
-                const actions = el('div', { className: 'actions' });
-                // 💡 تغییر ۲: استفاده از window.location.href به جای window.open(..., '_blank')
-                const openBtn = el('button', { className: 'action-btn open-btn' }); openBtn.innerHTML = '🌐 باز کردن سایت'; openBtn.addEventListener('click', () => window.location.href = item.link);
-                const mehrBtn = el('button', { className: 'action-btn mehr-btn' }); mehrBtn.innerHTML = '✨ تحلیل AI (soltani ai)';
-                
-                const summaryWrap = el('div', { className: 'summary-container' }, [
-                    el('h4', { html: 'تحلیل هوش مصنوعی (AI Analysis)' }),
-                    el('div', { className: 'summary-content', html: 'در حال بارگذاری...' })
-                ]);
-                
-                mehrBtn.addEventListener('click', async () => {
-                    const isActive = summaryWrap.classList.contains('active');
-                    const summaryContent = summaryWrap.querySelector('.summary-content');
-                    
-                    if (isActive) {
-                        summaryWrap.classList.remove('active');
-                        mehrBtn.innerHTML = '✨ تحلیل AI (Gemini)';
-                        return;
-                    }
 
-                    summaryWrap.classList.add('active');
-                    mehrBtn.innerHTML = '<span class="spinner"></span> در حال تحلیل...';
-                    mehrBtn.disabled = true;
+        // === تابع مرکزی جستجو ===
 
-                    try {
-                        summaryContent.innerHTML = `<div style="text-align:center;padding:10px;color:var(--primary)"><span class="spinner" style="border-top-color:var(--primary); border-width: 2px;"></span> در حال درخواست خلاصه از soltani ...</div>`;
-                        
-                        // *** فراخوانی تابع اصلاح شده ***
-                        const responseData = await summarizeWithGemini(item.link, qInput.value.trim());
-                        
-                        const summary = responseData.summary || 'خلاصه AI در دسترس نیست.';
-                        const details = responseData.detailsHtml || `<p>خلاصه توسط مدل SOLTANI_AI-rsd.1 ایجاد شده است.</p>`;
+        async function doSearch(type, start) {
+            const q = qInput.value.trim();
+            if (!q) return; 
 
-                        summaryContent.innerHTML = `
-                            <strong>خلاصه اصلی (AI):</strong> ${summary}
-                            <h4>جزئیات هوش مصنوعی و نکات کلیدی:</h4>
-                            <div class="ai-details">${details}</div>
-                        `;
-                    } catch (e) {
-                        // در صورت بروز خطای CORS یا خطای کلید API
-                        summaryContent.innerHTML = `<div style='color:var(--danger); font-weight:600'>❌ خطا در اجرای AI (soltani): ${e.message}</div>`;
-                        console.error("Gemini Error:", e);
-                    } finally { 
-                        mehrBtn.disabled = false; 
-                        mehrBtn.innerHTML = '✨ بستن تحلیل AI';
-                    }
-                });
+            // اگر کاربر در حالت وب یک لینک وارد کرده باشد
+            if (isURL(q) && type === 'web') {
+                const finalUrl = q.startsWith('http') ? q : `https://${q}`;
+                window.location.href = finalUrl;
+                return; 
+            }
+            
+            // اگر کاربر دکمه ویکی‌پدیا را زده باشد، از اینجا خارج می‌شود و در رویداد دکمه هندل شده است.
+            if (type === 'wiki') return;
+            
+            currentQuery = q;
+            currentSearchType = type;
+            startIndex = start;
 
-                actions.appendChild(openBtn); 
-                actions.appendChild(mehrBtn);
+            webResultsList.innerHTML = '';
+            imageGallery.innerHTML = '';
+            loadMoreBtn.style.display = 'none';
 
-                meta.appendChild(h); 
-                meta.appendChild(urlEl); 
-                meta.appendChild(snippet); 
-                meta.appendChild(actions); 
-                meta.appendChild(summaryWrap);
-                
-                r.appendChild(imgWrap); 
-                r.appendChild(meta);
-                webResultsList.appendChild(r);
-            });
-        }
-        
-        function renderImageResults(data) {
-            if (startIndex === 1) {
-                imageGallery.innerHTML = '';
-            }
+            resultTitle.style.display = 'block';
+            let titleText = '';
+            
+            switch (type) {
+                case 'web':
+                    titleText = `نتایج جست‌وجوی وب برای: "${q}"`;
+                    break;
+                case 'image':
+                    titleText = `نتایج جستجوی تصاویر برای: "${q}"`;
+                    break;
+                case 'video': // NEW
+                    // 💡 اصلاح عنوان برای ویدیو
+                    titleText = `نتایج ویدیو (یوتیوب و آپارات) برای: "${q}"`; 
+                    break;
+            }
+            resultTitle.textContent = titleText;
 
-            const items = data.items;
-            
-            if (!items || items.length === 0) {
-                if (startIndex === 1) {
-                    imageGallery.innerHTML = "<p style='text-align:center; color:var(--text-light);'>تصویری یافت نشد.</p>";
-                }
-                loadMoreBtn.style.display = "none";
-                return;
-            }
 
-            items.forEach(item => {
-                const div = document.createElement("div");
-                div.className = "image-item";
-                const imageUrl = item.image && item.image.thumbnailSrc ? item.image.thumbnailSrc : item.link;
-                div.style.backgroundImage = `url(${imageUrl})`;
-                div.setAttribute('title', item.title);
-                // 💡 تغییر ۳: استفاده از window.location.href به جای window.open(..., '_blank')
-                div.addEventListener('click', () => window.location.href = item.link); 
-                imageGallery.appendChild(div);
-            });
+            if (type === 'image') {
+                imageGallery.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-light)"><span class="spinner" style="border-top-color:var(--secondary)"></span> در حال جستجوی تصاویر...</div>`;
+            } else {
+                webResultsList.innerHTML = `<div style="text-align:center;padding:24px;color:var(--text-light)"><span class="spinner"></span> در حال جست‌وجوی ${titleText.split(':')[0]}...</div>`;
+            }
+            
+            if (startIndex > 1) {
+                loadMoreBtn.innerHTML = '<span class="spinner"></span> در حال بارگذاری...';
+                loadMoreBtn.disabled = true;
+            }
 
-            if (items.length < 10 || !data.queries.nextPage) {
-                loadMoreBtn.style.display = "none";
-            } else {
-                loadMoreBtn.style.display = "block";
-            }
-        }
+            try {
+                const data = await searchGoogle(q, type, startIndex);
+                
+                if (type === 'image') {
+                    renderImageResults(data);
+                } else {
+                    renderWebResults(data);
+                }
+                
+            } catch (err) {
+                const errorMessage = `❌ خطای API: ${err.message}. **کلید و شناسه را بررسی کنید.**`;
+                if (type === 'image' && startIndex === 1) {
+                    imageGallery.innerHTML = `<div style="text-align:center;color:var(--danger);padding:24px;font-weight:600">${errorMessage}</div>`;
+                } else if (type !== 'image') {
+                    webResultsList.innerHTML = `<div style="text-align:center;color:var(--danger);padding:24px;font-weight:600">${errorMessage}</div>`;
+                }
+                console.error(`Search Error (${type}):`, err);
+            } finally {
+                if (startIndex > 1) {
+                    loadMoreBtn.disabled = false;
+                    loadMoreBtn.innerHTML = 'بارگذاری بیشتر';
+                }
+            }
+        }
+        
+        function loadMore() {
+             startIndex += 10;
+             doSearch(currentSearchType, startIndex);
+        }
 
-        function loadMoreImages() {
-          startIndex += 10;
-          doImageSearch(startIndex);
-        }
+        // === توابع API ===
 
-        // === اجرای اولیه ===
-        (function initFromQuery() {
-            const params = new URLSearchParams(location.search);
-            const q = params.get('q');
-            const type = params.get('type');
-            if (q) { 
-                qInput.value = q; 
-                if (type === 'image') {
-                    doImageSearch(1);
-                } else {
-                    doWebSearch(); 
-                }
-            }
-        })();
+        async function searchGoogle(query, type, start = 1) {
+            let searchParams = `key=${encodeURIComponent(GOOGLE_API_KEY)}&cx=${encodeURIComponent(CX)}&q=${encodeURIComponent(query)}&start=${start}`;
+            
+            switch (type) {
+                case 'image':
+                    searchParams += '&searchType=image';
+                    break;
+                case 'video': // 💡 اصلاح مشکل ۲: استفاده از q=...site:youtube.com OR site:aparat.com
+                    // چون searchType=video در Programmable Search Engine معتبر نیست، جستجو را به YouTube و Aparat محدود می‌کنیم.
+                    searchParams += `&q=${encodeURIComponent(query)} site:youtube.com OR site:aparat.com`;
+                    break;
+                // 'web' و 'wiki' نیاز به پارامتر اضافه ندارند (ویکی‌پدیا مستقیماً هدایت می‌شود)
+            }
+            
+            const url = `https://www.googleapis.com/customsearch/v1?${searchParams}`;
+            
+            const res = await fetch(url);
+            
+            if (!res.ok) {
+                const errorBody = await res.json().catch(() => ({ message: 'No detailed error message from API.' }));
+                throw new Error(`Google API HTTP Error: ${res.status}. Details: ${errorBody.error?.message || errorBody.message}`);
+            }
+            return res.json();
+        }
 
-    </script>
+        // *** تابع خلاصه سازی با Gemini API (همانند قبل) ***
+        async function summarizeWithGemini(url, query) {
+            if (GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY' || !GEMINI_API_KEY) {
+                throw new Error("لطفاً متغیر GEMINI_API_KEY را با کلید معتبر خود جایگزین کنید.");
+            }
+            
+            const prompt = `خلاصه دقیقی از محتوای این URL ("${url}") بساز و به من ارائه بده. نکته‌های کلیدی مرتبط با عبارت جستجوی اصلی ("${query}") را برجسته کن. از زبان فارسی استفاده کن.`;
+            
+            const payload = {
+                contents: [{ role: "user", parts: [{ text: prompt }] }],
+                tools: [ 
+                    { googleSearch: {} } 
+                ]
+            };
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent?key=${GEMINI_API_KEY}`;
+            
+            const res = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) {
+                const errorBody = await res.json().catch(() => ({}));
+                const errorMessage = errorBody.error?.message || `خطای ناشناخته: ${res.status}`;
+                throw new Error(`فراخوانی با خطا مواجه شد: ${errorMessage}`);
+            }
+            
+            const data = await res.json();
+            const summary = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+            if (!summary) {
+                throw new Error("پاسخ خالی بود یا محتوایی نداشت.");
+            }
+            
+            return {
+                summary: summary,
+                detailsHtml: `<p>خلاصه توسط مدل SOLTANI_AI-rsd.1 ایجاد شده است.</p>`
+            };
+        }
+
+
+        // === توابع رندرینگ (مانند قبل) ===
+        
+        function renderWebResults(data) {
+            if (startIndex === 1) { 
+                webResultsList.innerHTML = '';
+            }
+
+            if (!data || !data.items || data.items.length === 0) {
+                if (startIndex === 1) {
+                    webResultsList.innerHTML = '<div style="text-align:center;color:var(--text-light);padding:24px">😭 نتیجه‌ای یافت نشد.</div>';
+                }
+                loadMoreBtn.style.display = 'none';
+                return;
+            }
+            
+            data.items.forEach(item => {
+                const r = el('div', { className: 'result' });
+                
+                const imgWrap = el('div', { className: 'favicon-wrap' }, [
+                    el('img', { className: 'favicon', src: faviconFor(item.link), alt: 'Favicon' })
+                ]);
+
+                const meta = el('div', { className: 'rmeta' });
+                
+                const titleLink = el('a', { href: item.link, rel: 'noopener noreferrer' }); 
+                titleLink.textContent = item.title;
+                const h = el('h3', {}, [titleLink]);
+                const snippet = el('p', {}, []); snippet.textContent = item.snippet || 'توضیحات در دسترس نیست.';
+                const urlEl = el('div', { className: 'url' }); urlEl.textContent = item.link;
+
+                const actions = el('div', { className: 'actions' });
+                
+                const openBtn = el('button', { className: 'action-btn open-btn' }); openBtn.innerHTML = '🌐 باز کردن سایت'; openBtn.addEventListener('click', () => window.location.href = item.link);
+                const mehrBtn = el('button', { className: 'action-btn mehr-btn' }); mehrBtn.innerHTML = '✨ تحلیل AI (soltani ai)';
+                
+                const summaryWrap = el('div', { className: 'summary-container' }, [
+                    el('h4', { html: 'تحلیل هوش مصنوعی (AI Analysis)' }),
+                    el('div', { className: 'summary-content', html: 'در حال بارگذاری...' })
+                ]);
+                
+                mehrBtn.addEventListener('click', async () => {
+                    const isActive = summaryWrap.classList.contains('active');
+                    const summaryContent = summaryWrap.querySelector('.summary-content');
+                    
+                    if (isActive) {
+                        summaryWrap.classList.remove('active');
+                        mehrBtn.innerHTML = '✨ تحلیل AI (soltani ai)';
+                        return;
+                    }
+
+                    summaryWrap.classList.add('active');
+                    mehrBtn.innerHTML = '<span class="spinner"></span> در حال تحلیل...';
+                    mehrBtn.disabled = true;
+
+                    try {
+                        summaryContent.innerHTML = `<div style="text-align:center;padding:10px;color:var(--primary)"><span class="spinner" style="border-top-color:var(--primary); border-width: 2px;"></span> در حال درخواست خلاصه از soltani ...</div>`;
+                        
+                        const responseData = await summarizeWithGemini(item.link, qInput.value.trim());
+                        
+                        const summary = responseData.summary || 'خلاصه AI در دسترس نیست.';
+                        const details = responseData.detailsHtml || `<p>خلاصه توسط مدل SOLTANI_AI-rsd.1 ایجاد شده است.</p>`;
+
+                        summaryContent.innerHTML = `
+                            <strong>خلاصه اصلی (AI):</strong> ${summary}
+                            <h4>جزئیات هوش مصنوعی و نکات کلیدی:</h4>
+                            <div class="ai-details">${details}</div>
+                        `;
+                    } catch (e) {
+                        summaryContent.innerHTML = `<div style='color:var(--danger); font-weight:600'>❌ خطا در اجرای AI (soltani): ${e.message}</div>`;
+                        console.error("Gemini Error:", e);
+                    } finally { 
+                        mehrBtn.disabled = false; 
+                        mehrBtn.innerHTML = '✨ بستن تحلیل AI';
+                    }
+                });
+
+                actions.appendChild(openBtn); 
+                actions.appendChild(mehrBtn);
+
+                meta.appendChild(h); 
+                meta.appendChild(urlEl); 
+                meta.appendChild(snippet); 
+                meta.appendChild(actions); 
+                meta.appendChild(summaryWrap);
+                
+                r.appendChild(imgWrap); 
+                r.appendChild(meta);
+                webResultsList.appendChild(r);
+            });
+            
+            // دکمه "بارگذاری بیشتر"
+            if (data.queries && data.queries.nextPage && data.queries.nextPage.length > 0) {
+                 loadMoreBtn.style.display = "block";
+                 loadMoreBtn.textContent = "بارگذاری نتایج بیشتر";
+            } else {
+                 loadMoreBtn.style.display = "none";
+            }
+        }
+        
+        function renderImageResults(data) {
+            if (startIndex === 1) {
+                imageGallery.innerHTML = '';
+            }
+
+            const items = data.items;
+            
+            if (!items || items.length === 0) {
+                if (startIndex === 1) {
+                    imageGallery.innerHTML = "<p style='text-align:center; color:var(--text-light);'>تصویری یافت نشد.</p>";
+                }
+                loadMoreBtn.style.display = "none";
+                return;
+            }
+
+            items.forEach(item => {
+                const div = document.createElement("div");
+                div.className = "image-item";
+                const imageUrl = item.image && item.image.thumbnailSrc ? item.image.thumbnailSrc : item.link;
+                div.style.backgroundImage = `url(${imageUrl})`;
+                div.setAttribute('title', item.title);
+                div.addEventListener('click', () => window.location.href = item.link); 
+                imageGallery.appendChild(div);
+            });
+
+            if (data.queries && data.queries.nextPage && data.queries.nextPage.length > 0) {
+                 loadMoreBtn.style.display = "block";
+                 loadMoreBtn.textContent = "بارگذاری تصاویر بیشتر";
+            } else {
+                 loadMoreBtn.style.display = "none";
+            }
+        }
+
+        // === اجرای اولیه ===
+        (function initFromQuery() {
+            const params = new URLSearchParams(location.search);
+            const q = params.get('q');
+            const type = params.get('type') || 'web'; 
+            if (q) { 
+                qInput.value = q; 
+                doSearch(type, 1); 
+            }
+        })();
+
+    </script>
 </body>
 </html>
